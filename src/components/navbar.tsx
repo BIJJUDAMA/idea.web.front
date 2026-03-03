@@ -37,7 +37,7 @@ export default function Navbar() {
 						<Link
 							key={link.name}
 							to={link.path}
-							className="text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors"
+							className="text-sm font-medium text-zinc-400 hover:text-white hover:![text-shadow:0_0_12px_rgba(255,255,255,0.6),0_0_5px_rgba(255,255,255,0.4)] transition-all duration-300"
 						>
 							{link.name}
 						</Link>
@@ -72,7 +72,7 @@ export default function Navbar() {
 						<Link
 							key={l.name}
 							to={l.path}
-							className="text-zinc-300 font-medium text-lg hover:text-yellow-400"
+							className="text-zinc-300 font-medium text-lg hover:text-white hover:![text-shadow:0_0_12px_rgba(255,255,255,0.6),0_0_5px_rgba(255,255,255,0.4)] transition-all duration-300"
 						>
 							{l.name}
 						</Link>

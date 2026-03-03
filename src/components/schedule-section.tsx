@@ -61,7 +61,7 @@ const ScheduleSection = React.memo(function ScheduleSection() {
 							<div className="absolute left-6 md:left-1/2 w-4 h-4 bg-yellow-400 rounded-full border-4 border-black -translate-x-[7px] md:-translate-x-1/2 shadow-[0_0_10px_rgba(250,204,21,0.5)] z-10" />
 							<div className="w-12 md:w-5/12" /> {/* Empty spacer */}
 							<div
-								className={`w-full pl-14 md:pl-0 md:w-5/12 ${isIntersecting ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"} transition-all duration-500`}
+								className={`w-full pl-14 md:pl-0 md:w-5/12 ${isIntersecting ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-12 scale-95"} transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]`}
 								style={{ transitionDelay: `${i * 200}ms` }}
 							>
 								<div className="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl hover:border-zinc-700 transition-colors">

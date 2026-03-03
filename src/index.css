@@ -60,12 +60,10 @@ body {
 }
 
 .gradient-text {
-	background: linear-gradient(
-		to right,
-		var(--gradient-start),
-		var(--gradient-mid),
-		var(--gradient-end)
-	);
+	background: linear-gradient(to right,
+			var(--gradient-start),
+			var(--gradient-mid),
+			var(--gradient-end));
 	-webkit-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
@@ -102,6 +100,16 @@ body {
 		opacity: 1;
 		transform: translateY(0);
 	}
+}
+
+/* Styles that were part of a merge conflict and are now correctly placed */
+a:hover {
+	color: #ffffff;
+	text-shadow: 0 0 8px rgba(255, 255, 255, 0.4), 0 0 12px rgba(200, 200, 200, 0.2);
+}
+
+button {
+	background-color: #f9f9f9;
 }
 
 @keyframes splashLogo {
@@ -151,6 +159,7 @@ body {
 }
 
 @keyframes shake {
+
 	10%,
 	90% {
 		transform: translate3d(-1px, 0, 0);
@@ -188,6 +197,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
 	*,
 	*::before,
 	*::after {
@@ -208,25 +218,47 @@ body {
 }
 
 .mask-edges {
-	mask-image: linear-gradient(
-		to right,
-		transparent,
-		black 10%,
-		black 90%,
-		transparent
-	);
-	-webkit-mask-image: linear-gradient(
-		to right,
-		transparent,
-		black 10%,
-		black 90%,
-		transparent
-	);
+	mask-image: linear-gradient(to right,
+			transparent,
+			black 10%,
+			black 90%,
+			transparent);
+	-webkit-mask-image: linear-gradient(to right,
+			transparent,
+			black 10%,
+			black 90%,
+			transparent);
 }
 
 .timeline-mask {
 	mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
 	-webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+/* Countdown timer */
+@keyframes countdownFlip {
+	0% {
+		transform: scaleY(1);
+		opacity: 1;
+	}
+
+	50% {
+		transform: scaleY(0.85);
+		opacity: 0.6;
+	}
+
+	100% {
+		transform: scaleY(1);
+		opacity: 1;
+	}
+}
+
+.countdown-flip {
+	animation: countdownFlip 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.countdown-card {
+	filter: drop-shadow(0 0 20px rgba(250, 204, 21, 0.06));
 }
 
 .delay-100 {

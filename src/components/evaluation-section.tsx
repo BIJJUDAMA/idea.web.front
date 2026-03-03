@@ -50,7 +50,7 @@ const EvaluationSection = React.memo(function EvaluationSection() {
 				{EVALUATION_ITEMS.map((item, i) => (
 					<div
 						key={i}
-						className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-1000 ${i === act ? "opacity-100 z-10" : "opacity-0 z-0"}`}
+						className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${i === act ? "opacity-100 z-10 translate-y-0 scale-100" : "opacity-0 z-0 translate-y-4 scale-95"}`}
 					>
 						<p className="text-xl md:text-3xl font-medium text-white mb-6 leading-tight max-w-3xl">
 							"{item.quote}"

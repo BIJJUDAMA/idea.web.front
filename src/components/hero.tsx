@@ -13,8 +13,13 @@ const Hero = React.memo(function Hero() {
 	}, []);
 
 	return (
-		<section className="relative min-h-[100vh] flex flex-col items-center justify-center pt-32 pb-20 px-6 text-center">
-			<div className="max-w-5xl mx-auto w-full flex flex-col items-center">
+		<section className="relative min-h-[100vh] flex flex-col items-center justify-center pt-32 pb-20 px-6 text-center overflow-hidden">
+			<div className="aurora-bg">
+				<div className="aurora-blob w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-yellow-500/10 top-[-10%] left-[-10%] mix-blend-screen" />
+				<div className="aurora-blob w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-pink-500/10 bottom-[-20%] right-[-10%] mix-blend-screen" style={{ animationDelay: '2s' }} />
+				<div className="aurora-blob w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-purple-500/10 top-1/4 left-1/4 mix-blend-screen" style={{ animationDelay: '4s' }} />
+			</div>
+			<div className="relative z-10 max-w-5xl mx-auto w-full flex flex-col items-center">
 				<div className="animate-fade-in-up mb-8 inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-yellow-400/30 bg-yellow-400/5 text-yellow-400 text-xs font-bold tracking-widest uppercase">
 					<span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
 					Ideathon Event 2026 · Amrita Vishwa Vidyapeetham
