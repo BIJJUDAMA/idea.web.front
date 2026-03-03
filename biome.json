@@ -12,7 +12,8 @@
 			"!!**/.bun-cache",
 			"!!**/dist",
 			"!!**/dist-ssr",
-			"!!**/node_modules"
+			"!!**/node_modules",
+			"!!**/routeTree.gen.ts"
 		]
 	},
 	"formatter": {
