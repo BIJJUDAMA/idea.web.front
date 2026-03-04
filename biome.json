@@ -6,11 +6,24 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": false
+		"ignoreUnknown": false,
+		"includes": [
+			"**",
+			"!!**/.bun-cache",
+			"!!**/dist",
+			"!!**/dist-ssr",
+			"!!**/node_modules",
+			"!!**/routeTree.gen.ts"
+		]
 	},
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab"
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
 	},
 	"linter": {
 		"enabled": true,
