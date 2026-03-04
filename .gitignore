@@ -29,14 +29,14 @@ bin/
 *.sln
 *.sw?
 
-# Assets
-assets/
-src/assets/
+# # Assets
+# assets/
+# src/assets/
 *.mp4
-# Images
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.webp
-*.svg
+# # Images
+# *.png
+# *.jpg
+# *.jpeg
+# *.gif
+# *.webp
+# *.svg

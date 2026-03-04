@@ -24,7 +24,9 @@ const RegistrationSection = React.memo(function RegistrationSection() {
 				</p>
 
 				<a
-					href="/#register"
+					href="https://forms.office.com/r/nMMTPg4Rua"
+					target="_blank"
+					rel="noopener noreferrer"
 					className="inline-block px-10 py-5 bg-yellow-400 text-black font-bold text-xl rounded-2xl hover:bg-yellow-300 hover:scale-105 transition-all shadow-[0_0_40px_rgba(250,204,21,0.3)]"
 				>
 					Register Your Team

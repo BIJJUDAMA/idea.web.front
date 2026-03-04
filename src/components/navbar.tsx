@@ -1,17 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import avishkarLogo from "../assets/avishkarlogo_withoutbg.png";
 import { Icons } from "./icons";
 
 export default function Navbar() {
-	const [scrolled, setScrolled] = useState(false);
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const routerState = useRouterState();
-
-	useEffect(() => {
-		const cb = () => setScrolled(window.scrollY > 80);
-		window.addEventListener("scroll", cb);
-		return () => window.removeEventListener("scroll", cb);
-	}, []);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: intentionally re-run when the route changes
 	useEffect(() => setMobileMenuOpen(false), [routerState.location.pathname]);
@@ -22,14 +16,14 @@ export default function Navbar() {
 	];
 
 	return (
-		<nav
-			className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-black/80 backdrop-blur-xl shadow-lg border-b border-white/5 py-3" : "bg-transparent py-6"}`}
-		>
+		<nav className="absolute top-0 w-full z-50 bg-transparent py-6">
 			<div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
 				<Link to="/" className="flex items-center gap-3">
-					<span className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 cursor-pointer">
-						IDEA
-					</span>
+					<img
+						src={avishkarLogo}
+						alt="Avishkar Logo"
+						className="h-10 w-auto object-contain drop-shadow-[0_0_15px_rgba(250,204,21,0.2)]"
+					/>
 				</Link>
 
 				<div className="hidden md:flex space-x-8 items-center bg-zinc-900/40 backdrop-blur-md px-6 py-2 rounded-full border border-white/5">
@@ -42,15 +36,6 @@ export default function Navbar() {
 							{link.name}
 						</Link>
 					))}
-				</div>
-
-				<div className="hidden md:flex">
-					<a
-						href="#register"
-						className="bg-yellow-400 text-black px-5 py-2 rounded-full text-sm font-semibold hover:bg-yellow-300 transition-colors"
-					>
-						Register Team
-					</a>
 				</div>
 
 				<button
@@ -77,12 +62,7 @@ export default function Navbar() {
 							{l.name}
 						</Link>
 					))}
-					<a
-						href="#register"
-						className="text-yellow-400 font-medium text-lg pt-2 border-t border-zinc-800"
-					>
-						Register Team →
-					</a>
+
 				</div>
 			</div>
 		</nav>

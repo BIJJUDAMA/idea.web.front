@@ -66,7 +66,7 @@ const TimerCard = React.memo(function TimerCard({
 /* ─── Separator colon ─── */
 function Separator() {
     return (
-        <div className="flex flex-col gap-2 items-center justify-center pb-6 opacity-40">
+        <div className="flex flex-col gap-2.5 items-center justify-center h-24 sm:h-32 md:h-36 self-start opacity-40">
             <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
             <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse delay-200" />
         </div>

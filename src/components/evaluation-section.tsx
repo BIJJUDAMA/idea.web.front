@@ -1,82 +1,226 @@
-import React, { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import React, { useRef } from "react";
 
-const EVALUATION_ITEMS = [
+// ─── Data ────────────────────────────────────────────────────────────────────
+
+const CRITERIA = [
 	{
-		quote:
-			"Greater weightage will be given to depth of problem analysis and stakeholder validation over technical complexity.",
-		name: "Key Focus",
-		role: "Primary Criteria",
+		id: "theme",
+		icon: (
+			<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+				<path d="M12 2L2 7l10 5 10-5-10-5z" />
+				<path d="M2 17l10 5 10-5" />
+				<path d="M2 12l10 5 10-5" />
+			</svg>
+		),
+		title: "Theme & Innovation",
+		description: "Ideas must be highly relevant to AI in Academia and demonstrate clear innovation and originality beyond existing solutions.",
+		delay: 0,
 	},
 	{
-		quote:
-			"Ideas must be highly relevant to AI in Academia and demonstrate clear innovation and originality.",
-		name: "Theme & Innovation",
-		role: "Core Aspect",
+		id: "tech",
+		icon: (
+			<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+				<rect x="2" y="3" width="20" height="14" rx="2" />
+				<path d="M8 21h8M12 17v4" />
+				<path d="M7 8l3 3-3 3M13 14h4" />
+			</svg>
+		),
+		title: "Technical Depth",
+		description: "Greater weightage given to depth of problem analysis and stakeholder validation over surface-level technical complexity.",
+		delay: 0.15,
 	},
 	{
-		quote:
-			"Solutions must show practical feasibility and clear application of AI concepts.",
-		name: "Feasibility & Tech",
-		role: "Implementation",
+		id: "impact",
+		icon: (
+			<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+				<circle cx="12" cy="12" r="10" />
+				<path d="M12 8v4l3 3" />
+				<path d="M3.05 11a9 9 0 0 1 17.9 0" />
+			</svg>
+		),
+		title: "Impact & Feasibility",
+		description: "Solutions must show practical feasibility, clear real-world application, and measurable potential to improve academia.",
+		delay: 0.3,
 	},
 	{
-		quote:
-			"The clarity of your presentation and how well you explain the problem and solution is critical to the judges.",
-		name: "Presentation",
-		role: "Delivery",
+		id: "presentation",
+		icon: (
+			<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+				<path d="M2 3h20v14H2zM8 21h8M12 17v4" />
+				<path d="M7 8h10M7 11h6" />
+			</svg>
+		),
+		title: "Presentation & Clarity",
+		description: "How well you communicate the problem, solution, and impact to judges is critical. Clarity is an advantage.",
+		delay: 0.45,
 	},
 ] as const;
 
+
+
+// ─── Tilt Card ────────────────────────────────────────────────────────────────
+
+const TiltCard: React.FC<{ children: React.ReactNode; delay: number }> = ({ children, delay }) => {
+	const ref = useRef<HTMLDivElement>(null);
+	const rawX = useMotionValue(0);
+	const rawY = useMotionValue(0);
+	const x = useSpring(rawX, { stiffness: 150, damping: 20 });
+	const y = useSpring(rawY, { stiffness: 150, damping: 20 });
+	const rotateX = useTransform(y, [-0.5, 0.5], [6, -6]);
+	const rotateY = useTransform(x, [-0.5, 0.5], [-6, 6]);
+
+	const handleMouseMove = (e: React.MouseEvent) => {
+		const el = ref.current;
+		if (!el) return;
+		const rect = el.getBoundingClientRect();
+		rawX.set((e.clientX - rect.left) / rect.width - 0.5);
+		rawY.set((e.clientY - rect.top) / rect.height - 0.5);
+	};
+	const handleMouseLeave = () => { rawX.set(0); rawY.set(0); };
+
+	return (
+		<motion.div
+			ref={ref}
+			style={{ rotateX, rotateY, transformPerspective: 800, transformStyle: "preserve-3d" }}
+			onMouseMove={handleMouseMove}
+			onMouseLeave={handleMouseLeave}
+			initial={{ opacity: 0, y: 36 }}
+			whileInView={{ opacity: 1, y: 0 }}
+			whileHover={{ scale: 1.03 }}
+			viewport={{ once: true, margin: "-60px" }}
+			transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+		>
+			{children}
+		</motion.div>
+	);
+};
+
+// ─── Criterion Card ───────────────────────────────────────────────────────────
+
+const CriterionCard: React.FC<(typeof CRITERIA)[number]> = ({ icon, title, description, delay }) => {
+	const [hovered, setHovered] = React.useState(false);
+
+	return (
+		<TiltCard delay={delay}>
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: decorative hover state only */}
+			<div
+				onMouseEnter={() => setHovered(true)}
+				onMouseLeave={() => setHovered(false)}
+				className="relative h-full rounded-2xl p-6 sm:p-7 cursor-default select-none overflow-hidden transition-all duration-500"
+				style={{
+					background: hovered ? "rgba(10, 12, 22, 0.85)" : "rgba(38, 38, 42, 0.75)",
+					backdropFilter: "blur(14px)",
+					WebkitBackdropFilter: "blur(14px)",
+					border: hovered ? "1px solid rgba(250,204,21,0.35)" : "1px solid rgba(90, 90, 100, 0.35)",
+					boxShadow: hovered
+						? "0 0 40px rgba(250,204,21,0.1), 0 8px 32px rgba(0,0,0,0.4)"
+						: "0 4px 24px rgba(0,0,0,0.3)",
+				}}
+			>
+				{/* Gradient glow on hover */}
+				<motion.div
+					className="absolute inset-0 rounded-2xl pointer-events-none"
+					animate={{ opacity: hovered ? 1 : 0 }}
+					transition={{ duration: 0.4 }}
+					style={{
+						background: "linear-gradient(135deg, rgba(250,204,21,0.07) 0%, rgba(236,72,153,0.07) 50%, rgba(99,102,241,0.07) 100%)",
+					}}
+				/>
+
+				{/* Icon */}
+				<div
+					className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-all duration-400"
+					style={{
+						background: hovered ? "rgba(250,204,21,0.15)" : "rgba(250,204,21,0.08)",
+						color: "#FACC15",
+					}}
+				>
+					{icon}
+				</div>
+
+				{/* Title */}
+				<h3 className="text-white font-semibold text-lg mb-3 tracking-tight">{title}</h3>
+
+				{/* Gradient underline */}
+				<div className="relative h-px mb-4 overflow-hidden rounded-full bg-white/5">
+					<motion.div
+						className="absolute inset-y-0 left-0 rounded-full"
+						style={{ background: "linear-gradient(90deg, #FACC15, #EC4899, #6366F1)" }}
+						animate={{ width: hovered ? "100%" : "32px" }}
+						transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+					/>
+				</div>
+
+				{/* Description */}
+				<p className="text-zinc-400 text-sm leading-relaxed font-light">{description}</p>
+			</div>
+		</TiltCard>
+	);
+};
+
+// ─── Main Section ─────────────────────────────────────────────────────────────
+
 const EvaluationSection = React.memo(function EvaluationSection() {
-	const [act, setAct] = useState(0);
-
-	useEffect(() => {
-		const int = setInterval(
-			() => setAct((p) => (p + 1) % EVALUATION_ITEMS.length),
-			5000,
-		);
-		return () => clearInterval(int);
-	}, []);
-
 	return (
 		<section
 			id="evaluation"
-			className="py-24 px-6 max-w-4xl mx-auto w-full text-center"
+			className="relative w-full overflow-hidden py-24 sm:py-32"
 		>
-			<h2 className="text-2xl text-zinc-500 font-medium mb-12">
-				Evaluation Criteria
-			</h2>
-			<div className="relative h-48 flex items-center justify-center overflow-hidden">
-				{EVALUATION_ITEMS.map((item, i) => (
+
+			<div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 lg:px-12">
+
+				{/* Header */}
+				<motion.div
+					className="text-center mb-20 sm:mb-24"
+					initial={{ opacity: 0, y: 24, filter: "blur(16px)" }}
+					whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+				>
 					<div
-						key={i}
-						className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${i === act ? "opacity-100 z-10 translate-y-0 scale-100" : "opacity-0 z-0 translate-y-4 scale-95"}`}
+						className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full mb-8"
+						style={{ background: "rgba(250,204,21,0.08)", border: "1px solid rgba(250,204,21,0.2)" }}
 					>
-						<p className="text-xl md:text-3xl font-medium text-white mb-6 leading-tight max-w-3xl">
-							"{item.quote}"
-						</p>
-						<div className="flex items-center gap-3">
-							<div className="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-yellow-400 flex items-center justify-center font-bold text-white">
-								{item.name[0]}
-							</div>
-							<div className="text-left">
-								<div className="font-bold text-white text-sm">{item.name}</div>
-								<div className="text-xs text-zinc-500">{item.role}</div>
-							</div>
-						</div>
+						<span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
+						<span className="text-yellow-400 text-xs font-semibold tracking-[0.2em] uppercase">
+							Evaluation Engine
+						</span>
 					</div>
-				))}
-			</div>
-			<div className="flex justify-center gap-2 mt-8">
-				{EVALUATION_ITEMS.map((_, i) => (
-					<button
-						type="button"
-						key={i}
-						aria-label={`Show evaluation criterion ${i + 1}`}
-						onClick={() => setAct(i)}
-						className={`w-2 h-2 rounded-full transition-all ${i === act ? "bg-yellow-400 w-6" : "bg-zinc-700"}`}
-					/>
-				))}
+
+					<h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white tracking-tight leading-tight mb-6">
+						Evaluation{" "}
+						<span className="font-semibold" style={{ color: "#FACC15" }}>Matrix</span>
+					</h2>
+
+					<p className="text-base sm:text-lg text-zinc-400 max-w-full sm:max-w-fit mx-auto leading-relaxed font-light">
+						Ideas must align with <span className="text-yellow-400 font-medium">AI in Academia</span> and demonstrate <span className="text-yellow-400 font-medium">measurable innovation.</span>
+					</p>
+
+					<div className="flex items-center justify-center gap-4 mt-10">
+						<div className="h-px flex-1 max-w-[80px]" style={{ background: "linear-gradient(to right, transparent, rgba(255,255,255,0.1))" }} />
+						<div className="w-1.5 h-1.5 rounded-full" style={{ background: "#FACC15" }} />
+						<div className="h-px flex-1 max-w-[80px]" style={{ background: "linear-gradient(to left, transparent, rgba(255,255,255,0.1))" }} />
+					</div>
+				</motion.div>
+
+				{/* Cards */}
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+					{CRITERIA.map((c) => (
+						<CriterionCard key={c.id} {...c} />
+					))}
+				</div>
+
+				{/* Footer note */}
+				<motion.p
+					className="text-center text-zinc-600 text-xs uppercase tracking-[0.2em] mt-14"
+					initial={{ opacity: 0 }}
+					whileInView={{ opacity: 1 }}
+					viewport={{ once: true }}
+					transition={{ duration: 1, delay: 0.8 }}
+				>
+					Judging criteria are weighted equally · All decisions are final
+				</motion.p>
 			</div>
 		</section>
 	);
